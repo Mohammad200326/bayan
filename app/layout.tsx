@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
-import "./globals.css";
+
 import { DirectionProvider } from "@/components/ui/direction";
+import Navbar from "@/components/Navbar";
+import "./globals.css";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -29,6 +31,7 @@ export default function RootLayout({
     >
       <body>
         <DirectionProvider dir="rtl" direction="rtl">
+          <Navbar />
           {children}
         </DirectionProvider>
       </body>
