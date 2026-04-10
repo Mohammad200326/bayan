@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 
 import { DirectionProvider } from "@/components/ui/direction";
+import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
 
@@ -30,10 +31,12 @@ export default function RootLayout({
       className={`${cairo.variable} relative font-sans antialiased`}
     >
       <body>
-        <DirectionProvider dir="rtl" direction="rtl">
-          <Navbar />
-          {children}
-        </DirectionProvider>
+        <ClerkProvider localization={{ locale: "ar" }}>
+          <DirectionProvider dir="rtl" direction="rtl">
+            <Navbar />
+            {children}
+          </DirectionProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
