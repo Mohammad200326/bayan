@@ -6,7 +6,9 @@ const Page = () => {
       <div className="mx-auto max-w-180 space-y-10">
         <section className="flex flex-col gap-5">
           <h1 className="page-title-xl">أضف كتابًا جديدًا</h1>
-          <p className="subtitle">قم بتحميل ملف PDF لإنشاء مقابلة تفاعلية</p>
+          <p className="subtitle">
+            قم بتحميل ملف PDF لإنشاء مقابلة القراءة التفاعلية الخاصة بك
+          </p>
         </section>
 
         <UploadForm />
