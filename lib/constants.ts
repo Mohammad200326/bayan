@@ -106,29 +106,30 @@ export const voiceOptions = {
   // Male voices
   dave: {
     id: "CYw3kZ02Hs0563khs1Fj",
-    name: "Dave",
-    description: "Young male, British-Essex, casual & conversational",
+    name: "ديف",
+    description:
+      "صوت شاب، بريطاني (لهجة إسيكس)، عفوي وقريب من أسلوب المحادثة اليومية",
   },
   daniel: {
     id: "onwK4e9ZLuTAKqWW03F9",
-    name: "Daniel",
-    description: "Middle-aged male, British, authoritative but warm",
+    name: "دانيال",
+    description: "صوت رجل في منتصف العمر، بريطاني، رسمي قليلًا لكن ودود وواثق",
   },
   chris: {
     id: "iP95p4xoKVk53GoZ742B",
-    name: "Chris",
-    description: "Male, casual & easy-going",
+    name: "كريس",
+    description: "صوت رجالي مريح، بسيط وسلس، مناسب للمحتوى غير الرسمي",
   },
   // Female voices
   rachel: {
     id: "21m00Tcm4TlvDq8ikWAM",
-    name: "Rachel",
-    description: "Young female, American, calm & clear",
+    name: "راشيل",
+    description: "صوت شابة أمريكية، هادئ وواضح، مثالي للشرح والتقديم",
   },
   sarah: {
     id: "EXAVITQu4vr4xnSDxMaL",
-    name: "Sarah",
-    description: "Young female, American, soft & approachable",
+    name: "سارة",
+    description: "صوت شابة أمريكية، ناعم ودافئ، يعطي إحساسًا بالراحة والقرب",
   },
 };
 
