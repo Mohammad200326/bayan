@@ -7,31 +7,31 @@ import {
 } from "./constants";
 
 export const UploadSchema = z.object({
-  title: z.string().min(1, "العنوان مطلوب").max(100, "العنوان طويل جداًا"),
+  title: z.string().min(1, "Title is required").max(100, "Title is too long"),
   author: z
     .string()
-    .min(1, "اسم المؤلف مطلوب")
-    .max(100, "اسم المؤلف طويل جداًا"),
-  persona: z.string().min(1, "يرجى اختيار صوت"),
+    .min(1, "Author name is required")
+    .max(100, "Author name is too long"),
+  persona: z.string().min(1, "Please select a voice"),
   pdfFile: z
-    .instanceof(File, { message: "ملف PDF مطلوب" })
+    .instanceof(File, { message: "PDF file is required" })
     .refine(
       (file) => file.size <= MAX_FILE_SIZE,
-      "يجب أن يكون حجم الملف أقل من 50 ميجابايت",
+      "File size must be less than 50MB",
     )
     .refine(
       (file) => ACCEPTED_PDF_TYPES.includes(file.type),
-      "يتم قبول ملفات PDF فقط",
+      "Only PDF files are accepted",
     ),
   coverImage: z
     .instanceof(File)
     .optional()
     .refine(
       (file) => !file || file.size <= MAX_IMAGE_SIZE,
-      "يجب أن يكون حجم الصورة أقل من 10 ميجابايت",
+      "Image size must be less than 10MB",
     )
     .refine(
       (file) => !file || ACCEPTED_IMAGE_TYPES.includes(file.type),
-      "تـُدعم فقط صيغ .jpg و .jpeg و .png و .webp",
+      "Only .jpg, .jpeg, .png and .webp formats are supported",
     ),
 });

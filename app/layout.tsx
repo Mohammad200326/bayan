@@ -5,6 +5,7 @@ import { DirectionProvider } from "@/components/ui/direction";
 import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -35,6 +36,7 @@ export default function RootLayout({
           <DirectionProvider dir="rtl" direction="rtl">
             <Navbar />
             {children}
+            <Toaster />
           </DirectionProvider>
         </ClerkProvider>
       </body>
