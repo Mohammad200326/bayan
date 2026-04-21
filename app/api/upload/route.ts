@@ -39,6 +39,10 @@ export async function POST(request: Request): Promise<NextResponse> {
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
     const status = message.includes("Unauthorized") ? 401 : 500;
-    return NextResponse.json({ error: message }, { status });
+    console.error("Upload error:", error);
+    const clientMessage = message.includes("Unauthorized")
+      ? "غير مصرح: يرجى تسجيل الدخول لتحميل الملفات."
+      : "حدث خطأ أثناء تحميل الملف. حاول مرة أخرى.";
+    return NextResponse.json({ error: clientMessage }, { status });
   }
 }
