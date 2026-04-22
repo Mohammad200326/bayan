@@ -3,6 +3,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { DEFAULT_VOICE, voiceOptions } from "./constants";
 import { slugify } from "transliteration";
+import { createWorker } from "tesseract.js";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -31,7 +32,6 @@ export const splitIntoSegments = (
   segmentSize: number = 500, // Maximum words per segment
   overlapSize: number = 50, // Words to overlap between segments for context
 ): TextSegment[] => {
-  // Validate parameters to prevent infinite loops
   if (segmentSize <= 0) {
     throw new Error("segmentSize must be greater than 0");
   }
@@ -69,15 +69,12 @@ export const splitIntoSegments = (
 export const getVoice = (persona?: string) => {
   if (!persona) return voiceOptions[DEFAULT_VOICE];
 
-  // Find by voice ID
   const voiceEntry = Object.values(voiceOptions).find((v) => v.id === persona);
   if (voiceEntry) return voiceEntry;
 
-  // Find by key
   const voiceByKey = voiceOptions[persona as keyof typeof voiceOptions];
   if (voiceByKey) return voiceByKey;
 
-  // Default fallback
   return voiceOptions[DEFAULT_VOICE];
 };
 
@@ -88,7 +85,37 @@ export const formatDuration = (seconds: number): string => {
   return `${mins}:${secs.toString().padStart(2, "0")}`;
 };
 
+// تنظيف النص الناتج من OCR
+export const cleanOCRText = (text: string): string => {
+  return text
+    .replace(/\r/g, "")
+    .replace(/[ـ]+/g, "") // إزالة التطويل
+    .replace(/[ \t]+/g, " ")
+    .replace(/ *\n */g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+};
+
+// تحويل canvas إلى blob لاستخدامه مع OCR
+export const canvasToBlob = (canvas: HTMLCanvasElement): Promise<Blob> => {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) {
+          reject(new Error("Failed to convert canvas to blob"));
+          return;
+        }
+        resolve(blob);
+      },
+      "image/png",
+      1,
+    );
+  });
+};
+
 export async function parsePDFFile(file: File) {
+  let worker: Awaited<ReturnType<typeof createWorker>> | null = null;
+
   try {
     const pdfjsLib = await import("pdfjs-dist");
 
@@ -108,42 +135,63 @@ export async function parsePDFFile(file: File) {
 
     // Render first page as cover image
     const firstPage = await pdfDocument.getPage(1);
-    const viewport = firstPage.getViewport({ scale: 2 }); // 2x scale for better quality
+    const coverViewport = firstPage.getViewport({ scale: 2 });
 
-    const canvas = document.createElement("canvas");
-    canvas.width = viewport.width;
-    canvas.height = viewport.height;
-    const context = canvas.getContext("2d");
+    const coverCanvas = document.createElement("canvas");
+    coverCanvas.width = Math.ceil(coverViewport.width);
+    coverCanvas.height = Math.ceil(coverViewport.height);
 
-    if (!context) {
+    const coverContext = coverCanvas.getContext("2d");
+    if (!coverContext) {
       throw new Error("Could not get canvas context");
     }
 
     await firstPage.render({
-      canvasContext: context,
-      viewport: viewport,
+      canvasContext: coverContext,
+      viewport: coverViewport,
     }).promise;
 
     // Convert canvas to data URL
-    const coverDataURL = canvas.toDataURL("image/png");
+    const coverDataURL = coverCanvas.toDataURL("image/png");
 
-    // Extract text from all pages
+    // Create OCR worker for Arabic
+    worker = await createWorker("ara");
+
+    // Extract text from all pages using OCR
     let fullText = "";
 
     for (let pageNum = 1; pageNum <= pdfDocument.numPages; pageNum++) {
       const page = await pdfDocument.getPage(pageNum);
-      const textContent = await page.getTextContent();
-      const pageText = textContent.items
-        .filter((item) => "str" in item)
-        .map((item) => (item as { str: string }).str)
-        .join("");
-      fullText += pageText + "\n";
+
+      // دقة أعلى لتحسين OCR
+      const viewport = page.getViewport({ scale: 2.5 });
+
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.ceil(viewport.width);
+      canvas.height = Math.ceil(viewport.height);
+
+      const context = canvas.getContext("2d");
+      if (!context) {
+        throw new Error(`Could not get canvas context for page ${pageNum}`);
+      }
+
+      await page.render({
+        canvasContext: context,
+        viewport,
+      }).promise;
+
+      const imageBlob = await canvasToBlob(canvas);
+      const result = await worker.recognize(imageBlob);
+
+      const pageText = cleanOCRText(result.data.text);
+      fullText += pageText + "\n\n";
     }
 
     // Split text into segments for search
     const segments = splitIntoSegments(fullText);
 
-    // Clean up PDF document resources
+    // Clean up resources
+    await worker.terminate();
     await pdfDocument.destroy();
 
     return {
@@ -151,6 +199,14 @@ export async function parsePDFFile(file: File) {
       cover: coverDataURL,
     };
   } catch (error) {
+    if (worker) {
+      try {
+        await worker.terminate();
+      } catch {
+        // ignore cleanup error
+      }
+    }
+
     console.error("Error parsing PDF:", error);
     throw new Error(
       `Failed to parse PDF file: ${error instanceof Error ? error.message : String(error)}`,
