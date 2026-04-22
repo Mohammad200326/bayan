@@ -6,6 +6,7 @@ import { escapeRegex, generateSlug, serializeData } from "../utils";
 import Book from "@/database/models/book.model";
 import BookSegment from "@/database/models/bookSegment.model";
 import mongoose from "mongoose";
+import { revalidatePath } from "next/cache";
 
 export const checkBookExists = async (title: string) => {
   try {
@@ -53,6 +54,9 @@ export const createBook = async (data: CreateBook) => {
     //
 
     const book = await Book.create({ ...data, slug, totalSegments: 0 });
+
+    revalidatePath("/");
+
     return {
       success: true,
       data: serializeData(book),
