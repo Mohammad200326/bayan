@@ -283,9 +283,9 @@ export function useVapi(book: IBook) {
       // Note: Server-returned maxDurationMinutes is informational only
       // The actual limit is enforced by useLatestRef(limits.maxSessionMinutes * 60)
 
-      //   const firstMessage = `أهلاً، تشرفت بلقائك. سؤال سريع قبل أن نبدأ - هل قرأت بالفعل كتاب ${book.title} أم أننا سنبدأ معًا؟`;
-      const firstMessage =
-        "مرحبًا، هل قرأت هذا الكتاب من قبل أم نبدأ معًا من البداية؟";
+      const firstMessage = `أهلاً، تشرفت بلقائك. سؤال سريع قبل أن نبدأ - هل قرأت بالفعل كتاب ${book.title} أم أننا سنبدأ معًا؟`;
+      // const firstMessage =
+      //   "مرحبًا، هل قرأت هذا الكتاب من قبل أم نبدأ معًا من البداية؟";
       await getVapi().start(ASSISTANT_ID, {
         firstMessage,
         variableValues: {
@@ -305,6 +305,15 @@ export function useVapi(book: IBook) {
       });
     } catch (err) {
       console.error("Failed to start call:", err);
+      if (sessionIdRef.current) {
+        endVoiceSession(sessionIdRef.current, 0).catch((endError) =>
+          console.error(
+            "Failed to rollback voice session after start failure:",
+            endError,
+          ),
+        );
+        sessionIdRef.current = null;
+      }
       setStatus("idle");
       setLimitError("فشل في بدء الجلسة الصوتية. يرجى المحاولة مرة أخرى.");
     }
