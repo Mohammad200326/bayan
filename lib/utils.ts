@@ -2,6 +2,7 @@ import { TextSegment } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { DEFAULT_VOICE, voiceOptions } from "./constants";
+import { slugify } from "transliteration";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -13,14 +14,10 @@ export const serializeData = <T>(data: T): T =>
 
 // Auto generate slug
 export function generateSlug(text: string): string {
-  return text
-    .replace(/\.[^/.]+$/, "") // Remove extension
-    .toLowerCase()
-    .trim()
-    .replace(/[^\p{L}\p{N}\s-]/gu, "") // ✅ يدعم العربي
-    .replace(/[\s_]+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-+|-+$/g, "");
+  return slugify(text.replace(/\.[^/.]+$/, ""), {
+    lowercase: true,
+    separator: "-",
+  });
 }
 
 // Escape regex special characters to prevent ReDoS attacks

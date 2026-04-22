@@ -139,6 +139,15 @@ export const voiceCategories = {
   female: ["rachel", "sarah"],
 };
 
+export function getVoiceDisplayName(voiceKey?: string): string {
+  if (!voiceKey) return "دانيال";
+
+  const normalizedKey = voiceKey.toLowerCase();
+  return (
+    voiceOptions[normalizedKey as keyof typeof voiceOptions]?.name || voiceKey
+  );
+}
+
 // Default voice
 export const DEFAULT_VOICE = "rachel";
 
