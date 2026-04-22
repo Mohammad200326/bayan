@@ -147,7 +147,7 @@ export async function parsePDFFile(file: File) {
     }
 
     await firstPage.render({
-      canvasContext: coverContext,
+      canvas: coverCanvas,
       viewport: coverViewport,
     }).promise;
 
@@ -176,7 +176,7 @@ export async function parsePDFFile(file: File) {
       }
 
       await page.render({
-        canvasContext: context,
+        canvas,
         viewport,
       }).promise;
 
