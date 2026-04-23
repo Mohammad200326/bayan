@@ -21,6 +21,7 @@ const navItems = [
     label: "إضافة",
     href: "/books/new",
   },
+  { label: "التسعير", href: "/subscriptions" },
 ];
 
 const Navbar = () => {

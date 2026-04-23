@@ -22,26 +22,29 @@ const VapiControls = ({ book }: { book: IBook }) => {
     start,
     stop,
     clearError,
+    limitError,
+    isBillingError,
+    maxDurationSeconds,
   } = useVapi(book);
-  //   const router = useRouter();
+  const router = useRouter();
 
-  //   useEffect(() => {
-  //     if (limitError) {
-  //       toast.error(limitError);
-  //       if (isBillingError) {
-  //         router.push("/subscriptions");
-  //       } else {
-  //         router.push("/");
-  //       }
-  //       clearError();
-  //     }
-  //   }, [isBillingError, limitError, router, clearError]);
+  useEffect(() => {
+    if (limitError) {
+      toast.error(limitError);
+      if (isBillingError) {
+        router.push("/subscriptions");
+      } else {
+        router.push("/");
+      }
+      clearError();
+    }
+  }, [isBillingError, limitError, router, clearError]);
 
-  //   const formatDuration = (seconds: number) => {
-  //     const mins = Math.floor(seconds / 60);
-  //     const secs = seconds % 60;
-  //     return `${mins}:${secs.toString().padStart(2, "0")}`;
-  //   };
+  const formatDuration = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
 
   const getStatusDisplay = () => {
     switch (status) {
@@ -76,7 +79,7 @@ const VapiControls = ({ book }: { book: IBook }) => {
               alt={book.title}
               width={120}
               height={180}
-              className="vapi-cover-image !w-[120px] !h-auto"
+              className="vapi-cover-image w-30! h-auto!"
               priority
             />
             <div className="vapi-mic-wrapper relative">
@@ -92,7 +95,7 @@ const VapiControls = ({ book }: { book: IBook }) => {
                 title={
                   isActive ? "إيقاف المساعد الصوتي" : "تشغيل المساعد الصوتي"
                 }
-                className={`vapi-mic-btn shadow-md !w-[60px] !h-[60px] z-10 ${isActive ? "vapi-mic-btn-active" : "vapi-mic-btn-inactive"}`}
+                className={`vapi-mic-btn shadow-md w-15! h-15! z-10 ${isActive ? "vapi-mic-btn-active" : "vapi-mic-btn-inactive"}`}
               >
                 {isActive ? (
                   <Mic className="size-7 text-white" />
@@ -126,18 +129,17 @@ const VapiControls = ({ book }: { book: IBook }) => {
               </div>
 
               <div className="vapi-status-indicator">
-                {/* <span className="vapi-status-text">
+                <span className="vapi-status-text">
                   {formatDuration(duration)}/
                   {formatDuration(maxDurationSeconds)}
-                </span> */}
-                <span className="vapi-status-text">0:00/15:00</span>
+                </span>
               </div>
             </div>
           </div>
         </div>
 
         <div className="vapi-transcript-wrapper">
-          <div className="transcript-container min-h-[400px]">
+          <div className="transcript-container min-h-100">
             <Transcript
               messages={messages}
               currentMessage={currentMessage}
