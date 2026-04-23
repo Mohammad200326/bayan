@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
+import { arSA } from "@clerk/localizations";
 
 import { DirectionProvider } from "@/components/ui/direction";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -32,7 +33,7 @@ export default function RootLayout({
       className={`${cairo.variable} relative font-sans antialiased`}
     >
       <body>
-        <ClerkProvider localization={{ locale: "ar" }}>
+        <ClerkProvider localization={arSA}>
           <DirectionProvider dir="rtl" direction="rtl">
             <Navbar />
             {children}
