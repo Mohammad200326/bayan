@@ -54,7 +54,7 @@ const HeroSection = () => {
                 <div className="w-10 h-10 min-w-10 min-h-10 rounded-full border border-gray-300 flex items-center justify-center font-medium text-lg">
                   1
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col text-right">
                   <h3 className="library-step-title text-lg font-bold">
                     رفع ملف PDF
                   </h3>
@@ -67,7 +67,7 @@ const HeroSection = () => {
                 <div className="w-10 h-10 min-w-10 min-h-10 rounded-full border border-gray-300 flex items-center justify-center font-medium text-lg">
                   2
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col text-right">
                   <h3 className="library-step-title text-lg font-bold">
                     معالجة الذكاء الاصطناعي
                   </h3>
@@ -80,7 +80,7 @@ const HeroSection = () => {
                 <div className="w-10 h-10 min-w-10 min-h-10 rounded-full border border-gray-300 flex items-center justify-center font-medium text-lg">
                   3
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col text-right">
                   <h3 className="library-step-title text-lg font-bold">
                     محادثة صوتية
                   </h3>
