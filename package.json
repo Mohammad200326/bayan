@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@clerk/localizations": "^4.5.3",
     "@clerk/nextjs": "^7.0.12",
     "@hookform/resolvers": "^5.2.2",
     "@vapi-ai/web": "^2.5.2",

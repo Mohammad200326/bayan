@@ -129,8 +129,11 @@ const UploadForm = () => {
       });
 
       if (!book.success) {
-        console.error("createBook failed:", book);
-        throw new Error(book.error || "فشل إنشاء الكتاب");
+        toast.error((book.error as string) || "Failed to create book");
+        if (book.isBillingError) {
+          router.push("/subscriptions");
+        }
+        return;
       }
       if (book.alreadyExists) {
         toast.info("يوجد كتاب بنفس العنوان بالفعل.");

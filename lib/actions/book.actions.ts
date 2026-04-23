@@ -7,6 +7,9 @@ import Book from "@/database/models/book.model";
 import BookSegment from "@/database/models/bookSegment.model";
 import mongoose from "mongoose";
 import { revalidatePath } from "next/cache";
+import { auth } from "@clerk/nextjs/server";
+import { getUserPlan } from "../subscription.server";
+import { PLAN_LIMITS } from "../subscription-constants";
 
 export const checkBookExists = async (title: string) => {
   try {
@@ -51,7 +54,27 @@ export const createBook = async (data: CreateBook) => {
       };
     }
 
-    //
+    const { userId } = await auth();
+
+    if (!userId || userId !== data.clerkId) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    const plan = await getUserPlan();
+    const limits = PLAN_LIMITS[plan];
+
+    const bookCount = await Book.countDocuments({ clerkId: userId });
+
+    if (bookCount >= limits.maxBooks) {
+      const { revalidatePath } = await import("next/cache");
+      revalidatePath("/");
+
+      return {
+        success: false,
+        error: `لقد وصلت إلى الحد الأقصى لعدد الكتب المسموح بها في خطة ${plan} (${limits.maxBooks}). يرجى الترقية لإضافة المزيد من الكتب.`,
+        isBillingError: true,
+      };
+    }
 
     const book = await Book.create({ ...data, slug, totalSegments: 0 });
 
