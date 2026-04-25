@@ -11,7 +11,7 @@ const HeroSection = () => {
             <h1 className="library-hero-title text-4xl font-serif font-bold">
               مكتبتك
             </h1>
-            <p className="library-hero-description">
+            <p className="library-hero-description text-right">
               حوّل كتبك إلى محادثات تفاعلية باستخدام الذكاء الاصطناعي.
               <br className="hidden md:block" />
               استمع، وتعلّم، وناقش قراءاتك المفضلة.
