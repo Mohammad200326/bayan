@@ -23,7 +23,7 @@ const VoiceSelector = ({
       >
         {/* Male Voices */}
         <div className="space-y-4">
-          <h4 className="text-sm font-medium text-[#777]">أصوات الذكور</h4>
+          {/* <h4 className="text-sm font-medium text-[#777]">أصوات الذكور</h4> */}
           <div className="voice-selector-options">
             {voiceCategories.male.map((voiceId) => {
               const voice = voiceOptions[voiceId as keyof typeof voiceOptions];
@@ -71,7 +71,7 @@ const VoiceSelector = ({
         </div>
 
         {/* Female Voices */}
-        <div className="space-y-4">
+        {/* <div className="space-y-4">
           <h4 className="text-sm font-medium text-[#777]">أصوات الإناث</h4>
           <div className="voice-selector-options">
             {voiceCategories.female.map((voiceId) => {
@@ -117,7 +117,7 @@ const VoiceSelector = ({
               );
             })}
           </div>
-        </div>
+        </div> */}
       </RadioGroup>
     </div>
   );

@@ -106,41 +106,40 @@ export const voiceOptions = {
   // Male voices
   dave: {
     id: "CYw3kZ02Hs0563khs1Fj",
-    name: "ديف",
-    description:
-      "صوت شاب، بريطاني (لهجة إسيكس)، عفوي وقريب من أسلوب المحادثة اليومية",
+    name: "آدم",
+    description: "صوت شاب واضح وقريب من المحادثة اليومية",
   },
   daniel: {
     id: "onwK4e9ZLuTAKqWW03F9",
-    name: "دانيال",
-    description: "صوت رجل في منتصف العمر، بريطاني، رسمي قليلًا لكن ودود وواثق",
+    name: "سليم",
+    description: "صوت متزن وواثق، مناسب للشرح والمحتوى الجاد",
   },
   chris: {
     id: "iP95p4xoKVk53GoZ742B",
-    name: "كريس",
-    description: "صوت رجالي مريح، بسيط وسلس، مناسب للمحتوى غير الرسمي",
+    name: "كريم",
+    description: "صوت بسيط وسلس، مناسب لتجربة مريحة وغير رسمية",
   },
   // Female voices
-  rachel: {
-    id: "21m00Tcm4TlvDq8ikWAM",
-    name: "راشيل",
-    description: "صوت شابة أمريكية، هادئ وواضح، مثالي للشرح والتقديم",
-  },
-  sarah: {
-    id: "EXAVITQu4vr4xnSDxMaL",
-    name: "سارة",
-    description: "صوت شابة أمريكية، ناعم ودافئ، يعطي إحساسًا بالراحة والقرب",
-  },
+  // rachel: {
+  //   id: "21m00Tcm4TlvDq8ikWAM",
+  //   name: "راشيل",
+  //   description: "صوت شابة أمريكية، هادئ وواضح، مثالي للشرح والتقديم",
+  // },
+  // sarah: {
+  //   id: "EXAVITQu4vr4xnSDxMaL",
+  //   name: "سارة",
+  //   description: "صوت شابة أمريكية، ناعم ودافئ، يعطي إحساسًا بالراحة والقرب",
+  // },
 };
 
 // Voice categories for the selector UI
 export const voiceCategories = {
   male: ["dave", "daniel", "chris"],
-  female: ["rachel", "sarah"],
+  // female: ["rachel", "sarah"],
 };
 
 export function getVoiceDisplayName(voiceKey?: string): string {
-  if (!voiceKey) return "دانيال";
+  if (!voiceKey) return "سليم";
 
   const normalizedKey = voiceKey.toLowerCase();
   return (
