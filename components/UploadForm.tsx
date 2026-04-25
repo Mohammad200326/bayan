@@ -193,7 +193,7 @@ const UploadForm = () => {
               acceptTypes={ACCEPTED_IMAGE_TYPES}
               icon={ImageIcon}
               placeholder="انقر لتحميل صورة الغلاف"
-              hint="اترك فارغًا لالتوليد التلقائي من PDF"
+              hint="اتركه فارغًا ليتم توليده التلقائي من PDF"
               disabled={isSubmitting}
             />
 
@@ -207,7 +207,7 @@ const UploadForm = () => {
                   <FormControl>
                     <Input
                       className="form-input"
-                      placeholder="مثال: الأب الغني الأب الفقير"
+                      placeholder="مثال: رياض الصالحين"
                       {...field}
                       disabled={isSubmitting}
                     />
@@ -227,7 +227,7 @@ const UploadForm = () => {
                   <FormControl>
                     <Input
                       className="form-input"
-                      placeholder="مثال: روبرت كيوساكي"
+                      placeholder="مثال: الإمام النووي"
                       {...field}
                       disabled={isSubmitting}
                     />
