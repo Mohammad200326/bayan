@@ -148,7 +148,7 @@ export function getVoiceDisplayName(voiceKey?: string): string {
 }
 
 // Default voice
-export const DEFAULT_VOICE = "rachel";
+export const DEFAULT_VOICE = "daniel";
 
 // ElevenLabs voice settings optimized for conversational AI
 export const VOICE_SETTINGS = {
